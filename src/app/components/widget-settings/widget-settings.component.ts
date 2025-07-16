@@ -346,80 +346,193 @@ export class WidgetSettingsComponent implements OnInit {
   ],
   template: `
     <div class="metric-dialog">
-      <h2 mat-dialog-title class="dialog-title">
-        <span class="material-icons">analytics</span>
-        Metric Configuration
-      </h2>
-
-      <mat-dialog-content class="dialog-content">
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Metric Name</mat-label>
-            <input matInput [(ngModel)]="metricConfig.name" placeholder="Enter metric name">
-          </mat-form-field>
-        </div>
-
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Metric Type</mat-label>
-            <mat-select [(ngModel)]="metricConfig.type">
-              <mat-option value="count">Count</mat-option>
-              <mat-option value="sum">Sum</mat-option>
-              <mat-option value="average">Average</mat-option>
-              <mat-option value="percentage">Percentage</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Display Format</mat-label>
-            <mat-select [(ngModel)]="metricConfig.format">
-              <mat-option value="number">Number</mat-option>
-              <mat-option value="currency">Currency</mat-option>
-              <mat-option value="percentage">Percentage</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-
-        <div class="form-group">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Target Value (Optional)</mat-label>
-            <input matInput type="number" [(ngModel)]="metricConfig.target" placeholder="Enter target value">
-          </mat-form-field>
-        </div>
-      </mat-dialog-content>
-
-      <mat-dialog-actions class="dialog-actions">
-        <button mat-button (click)="onCancel()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="onSave()">
-          <span class="material-icons">save</span>
-          Save Metric
+      <div class="dialog-header">
+        <h2 class="dialog-title">Widget Settings</h2>
+        <button mat-icon-button (click)="onCancel()" class="close-btn">
+          <span class="material-icons">close</span>
         </button>
-      </mat-dialog-actions>
+      </div>
+
+      <div class="dialog-content">
+        <!-- Display Name Section -->
+        <div class="section">
+          <label class="section-label">DISPLAY NAME</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <input matInput [(ngModel)]="metricConfig.displayName" placeholder="Metric Breakdown">
+          </mat-form-field>
+          <div class="character-count">{{ getCharacterCount() }} characters remaining</div>
+        </div>
+
+        <!-- Metrics Section -->
+        <div class="section">
+          <label class="section-label">Metrics</label>
+          <button class="select-metric-btn" (click)="openMetricSelector()">Select Metric</button>
+        </div>
+
+        <!-- View Section -->
+        <div class="section">
+          <label class="section-label">View</label>
+          <label class="field-label">VIEW BY</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select [(ngModel)]="metricConfig.viewBy">
+              <mat-option value="agent">Agent</mat-option>
+              <mat-option value="team">Team</mat-option>
+              <mat-option value="campaign">Campaign</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Employee Groups Section -->
+        <div class="section">
+          <label class="section-label">Employee Groups</label>
+          <div class="form-row">
+            <div class="form-col">
+              <label class="field-label">TEAM</label>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-select [(ngModel)]="metricConfig.team">
+                  <mat-option value="99">99 selected</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-col">
+              <label class="field-label">AGENT</label>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-select [(ngModel)]="metricConfig.agent">
+                  <mat-option value="3937">3937 selected</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Groups Section -->
+        <div class="section">
+          <label class="section-label">Contact Groups</label>
+          <label class="field-label">CAMPAIGN</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select [(ngModel)]="metricConfig.campaign">
+              <mat-option value="49">49 selected</mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <label class="field-label">SKILL</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select [(ngModel)]="metricConfig.skill">
+              <mat-option value="5354">5354 selected</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- Additional Filters Section -->
+        <div class="section">
+          <label class="section-label">Additional Filters</label>
+          <label class="field-label">DATA ATTRIBUTES</label>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-select [(ngModel)]="metricConfig.dataAttributes">
+              <mat-option value="">Select Items</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="dialog-actions">
+        <button mat-button (click)="onCancel()" class="cancel-btn">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSave()" class="save-btn">Save</button>
+      </div>
     </div>
   `,
   styles: [`
     .metric-dialog {
-      width: 500px;
+      width: 600px;
       max-width: 95vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dialog-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .dialog-title {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       color: #1e293b;
       font-weight: 600;
-      margin-bottom: 0;
+      font-size: 1.125rem;
+      margin: 0;
+    }
+
+    .close-btn {
+      color: #6b7280;
     }
 
     .dialog-content {
-      padding: 1.5rem 0;
+      flex: 1;
+      padding: 1.5rem;
+      overflow-y: auto;
     }
 
-    .form-group {
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
       margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+      margin-top: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .field-label:first-of-type {
+      margin-top: 0;
+    }
+
+    .character-count {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    .select-metric-btn {
+      background: none;
+      border: none;
+      color: #3b82f6;
+      font-size: 0.875rem;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    .select-metric-btn:hover {
+      color: #2563eb;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-col {
+      display: flex;
+      flex-direction: column;
     }
 
     .full-width {
@@ -430,21 +543,48 @@ export class WidgetSettingsComponent implements OnInit {
       display: flex;
       justify-content: flex-end;
       gap: 0.75rem;
-      padding-top: 1rem;
+      padding: 1rem 1.5rem;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .cancel-btn {
+      color: #6b7280;
+    }
+
+    .save-btn {
+      background: #3b82f6;
+      color: white;
     }
 
     .material-icons {
       font-family: 'Material Icons';
       font-size: 1.125rem;
     }
+
+    @media (max-width: 768px) {
+      .metric-dialog {
+        width: 100vw;
+        max-width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
   `]
 })
 export class MetricConfigDialogComponent {
   metricConfig = {
-    name: '',
-    type: 'count',
-    format: 'number',
-    target: null
+    displayName: 'Metric Breakdown',
+    viewBy: 'agent',
+    team: '99',
+    agent: '3937',
+    campaign: '49',
+    skill: '5354',
+    dataAttributes: ''
   };
 
   constructor(
@@ -455,6 +595,17 @@ export class MetricConfigDialogComponent {
     if (data.currentConfig) {
       this.metricConfig = { ...this.metricConfig, ...data.currentConfig };
     }
+  }
+
+  getCharacterCount(): number {
+    const maxLength = 50;
+    const currentLength = this.metricConfig.displayName.length;
+    return maxLength - currentLength;
+  }
+
+  openMetricSelector(): void {
+    // Placeholder for metric selector functionality
+    console.log('Opening metric selector...');
   }
 
   onSave(): void {
