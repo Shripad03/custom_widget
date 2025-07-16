@@ -1,0 +1,137 @@
+/* ---------------------------------------------------
+   Layout & structure
+--------------------------------------------------- */
+.custom-widget-layout {
+  height: 100vh;
+  background: #f8fafc;
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+
+}
+.custom-widget-body{
+  display: flex;
+}
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+}
+
+/* ---------------------------------------------------
+   Mobile menu toggle
+--------------------------------------------------- */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+ top: 4px; 
+    left: 6px;
+
+  z-index: 1000;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+  background: #f8fafc;
+  transform: scale(1.05);
+}
+
+/* ---------------------------------------------------
+   Sidebar overlay (for mobile)
+--------------------------------------------------- */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ---------------------------------------------------
+   Material Icons
+--------------------------------------------------- */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------
+   Tablet styles (<=1024px)
+--------------------------------------------------- */
+@media (max-width: 1024px) {
+  .custom-widget-layout {
+    flex-direction: row;
+  }
+}
+
+/* ---------------------------------------------------
+   Mobile styles (<=768px)
+--------------------------------------------------- */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  app-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    width: 280px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  app-sidebar:not(.sidebar-hidden) {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ---------------------------------------------------
+   Small mobile styles (<=480px)
+--------------------------------------------------- */
+@media (max-width: 480px) {
+  app-sidebar {
+    width: 100vw;
+  }
+}

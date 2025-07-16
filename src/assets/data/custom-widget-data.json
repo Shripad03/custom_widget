@@ -1,0 +1,230 @@
+{
+  "dataSources": {
+    "agent-status": {
+      "name": "Agent Status Overview",
+      "description": "Real-time agent availability and workload",
+      "categoryField": "state",
+      "valueField": "agentCount",
+      "data": [
+        {
+          "state": "Available",
+          "agentCount": 25
+        },
+        {
+          "state": "On Call",
+          "agentCount": 15
+        },
+        {
+          "state": "After Call Work",
+          "agentCount": 8
+        },
+        {
+          "state": "Break",
+          "agentCount": 5
+        },
+        {
+          "state": "Offline",
+          "agentCount": 12
+        }
+      ]
+    },
+    "queue-metrics": {
+      "name": "Queue Metrics",
+      "description": "Live data on contact center queues",
+      "categoryField": "queue",
+      "valueField": "callsInQueue",
+      "data": [
+        {
+          "queue": "Sales",
+          "callsInQueue": 12,
+          "avgWaitTime": 45,
+          "longestWaitTime": 120,
+          "abandonedCalls": 2
+        },
+        {
+          "queue": "Support",
+          "callsInQueue": 8,
+          "avgWaitTime": 30,
+          "longestWaitTime": 95,
+          "abandonedCalls": 1
+        },
+        {
+          "queue": "Billing",
+          "callsInQueue": 5,
+          "avgWaitTime": 25,
+          "longestWaitTime": 80,
+          "abandonedCalls": 0
+        }
+      ]
+    },
+    "campaign-kpis": {
+      "name": "Campaign KPIs",
+      "description": "Performance metrics for outbound campaigns",
+      "categoryField": "campaign",
+      "valueField": "contactsMade",
+      "data": [
+        {
+          "campaign": "Winback",
+          "callsPlaced": 1500,
+          "contactsMade": 800,
+          "conversionRate": 12,
+          "avgHandleTime": 220
+        },
+        {
+          "campaign": "Survey",
+          "callsPlaced": 1000,
+          "contactsMade": 650,
+          "conversionRate": 18,
+          "avgHandleTime": 180
+        },
+        {
+          "campaign": "Upsell",
+          "callsPlaced": 1200,
+          "contactsMade": 700,
+          "conversionRate": 10,
+          "avgHandleTime": 250
+        }
+      ]
+    },
+    "csat-scores": {
+      "name": "Customer Satisfaction",
+      "description": "CSAT scores and survey responses",
+      "categoryField": "period",
+      "valueField": "csatScore",
+      "data": [
+        {
+          "period": "January",
+          "csatScore": 85,
+          "responses": 500
+        },
+        {
+          "period": "February",
+          "csatScore": 87,
+          "responses": 520
+        },
+        {
+          "period": "March",
+          "csatScore": 84,
+          "responses": 480
+        },
+        {
+          "period": "April",
+          "csatScore": 88,
+          "responses": 530
+        },
+        {
+          "period": "May",
+          "csatScore": 86,
+          "responses": 510
+        }
+      ]
+    },
+    "call-volume": {
+      "name": "Call Volume Trends",
+      "description": "Monthly inbound and outbound call volumes",
+      "categoryField": "period",
+      "valueField": "inboundCalls",
+      "data": [
+        {
+          "period": "January",
+          "inboundCalls": 4500,
+          "outboundCalls": 2200
+        },
+        {
+          "period": "February",
+          "inboundCalls": 4700,
+          "outboundCalls": 2100
+        },
+        {
+          "period": "March",
+          "inboundCalls": 4900,
+          "outboundCalls": 2300
+        },
+        {
+          "period": "April",
+          "inboundCalls": 5100,
+          "outboundCalls": 2400
+        },
+        {
+          "period": "May",
+          "inboundCalls": 4800,
+          "outboundCalls": 2250
+        }
+      ]
+    },
+    "agent-performance": {
+      "name": "Agent Performance",
+      "description": "Metrics by individual agent",
+      "categoryField": "agent",
+      "valueField": "callsHandled",
+      "data": [
+        {
+          "agent": "Alice Smith",
+          "callsHandled": 320,
+          "avgHandleTime": 210,
+          "csatScore": 88,
+          "loginHours": 160
+        },
+        {
+          "agent": "Bob Johnson",
+          "callsHandled": 300,
+          "avgHandleTime": 230,
+          "csatScore": 85,
+          "loginHours": 155
+        },
+        {
+          "agent": "Charlie Lee",
+          "callsHandled": 280,
+          "avgHandleTime": 200,
+          "csatScore": 90,
+          "loginHours": 150
+        },
+        {
+          "agent": "Diana Prince",
+          "callsHandled": 310,
+          "avgHandleTime": 220,
+          "csatScore": 87,
+          "loginHours": 158
+        }
+      ]
+    },
+    "supervisor-tree": {
+      "name": "Supervisor-Agent Tree",
+      "description": "Shows hierarchical relationship between supervisors and agents",
+      "data": [
+        {
+          "name": "Robert Martinez",
+          "role": "Supervisor",
+          "children": [
+            {
+              "name": "Emily Johnson",
+              "role": "Agent"
+            },
+            {
+              "name": "Matthew Davis",
+              "role": "Agent"
+            }
+          ]
+        },
+        {
+          "name": "Jennifer Lee",
+          "role": "Supervisor",
+          "children": [
+            {
+              "name": "Sarah Thompson",
+              "role": "Agent"
+            },
+            {
+              "name": "Daniel Moore",
+              "role": "Agent"
+            },
+            {
+              "name": "Jessica Brown",
+              "role": "Agent"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

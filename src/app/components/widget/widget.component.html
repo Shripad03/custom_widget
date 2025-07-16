@@ -1,0 +1,173 @@
+<div class="widget-card" [id]="'widget-' + widget.id" [style.width.px]="widget.size.width"
+  [style.height.px]="widget.size.height" [style.left.px]="widget.position.x" [style.top.px]="widget.position.y">
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <div class="spinner"></div>
+      <span class="loading-text">Loading...</span>
+    </div>
+  </div>
+
+<div class="widget-header">
+  <h3 class="widget-title">{{ widget.title }}</h3>
+  
+  <div class="widget-actions">
+    
+    <!-- Export buttons -->
+    <ng-container *ngIf="widget.type === 'table' && tableData?.length">
+      <button class="action-btn" (click)="exportTableToCSV()" title="Export to CSV">
+        <span class="material-icons">download</span>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="widget.type === 'chart' && chartOptions">
+      <button class="action-btn" (click)="exportChartAsPNG()" title="Export Chart as PNG">
+        <span class="material-icons">image</span>
+      </button>
+    </ng-container>
+    
+    <!-- Common actions -->
+    <ng-container *ngIf="widget.type !== 'import'">
+      <button class="action-btn" (click)="refreshData()" title="Refresh Data" [disabled]="isLoading">
+        <span class="material-icons" [class.spinning]="isLoading">refresh</span>
+      </button>
+      <button class="action-btn" (click)="editWidget()" title="Settings">
+        <span class="material-icons">settings</span>
+      </button>
+          <button class="action-btn" (click)="openWidgetFullscreen()" title="Expand">
+      <span class="material-icons">fullscreen</span>
+    </button>
+    </ng-container>
+    
+    <!-- Always visible actions -->
+    <button class="action-btn delete" (click)="deleteWidget()" title="Delete">
+      <span class="material-icons">delete</span>
+    </button>
+
+  </div>
+</div>
+
+  <div class="widget-content">
+    <div *ngIf="widget.type === 'table'" class="table-widget">
+      <div class="table-container">
+        <ng-container *ngIf="tableData && tableData.length > 0; else tablePlaceholder">
+          <table class="data-table">
+            <thead *ngIf="showHeader">
+              <tr>
+                <th *ngFor="let column of displayColumns" [style.width]="column.width" (click)="sortTable(column.field)"
+                  [class.sortable]="column.sortable">
+                  {{ column.header }}
+                  <span *ngIf="column.sortable && sortField === column.field" class="sort-indicator">
+                    {{ sortDirection === 'asc' ? '↑' : '↓' }}
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of paginatedData" class="table-row">
+                <td *ngFor="let column of displayColumns">
+                  {{ formatCellValue(row[column.field], column.type) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="table-footer" *ngIf="showPagination">
+            <div class="pagination-info">
+              Showing {{ getStartIndex() + 1 }}-{{ getEndIndex() }} of {{ tableData.length }} rows
+            </div>
+            <div class="pagination-controls">
+              <button class="page-btn" (click)="previousPage()" [disabled]="currentPage === 0">
+                <span class="material-icons">chevron_left</span>
+              </button>
+              <span class="page-info">{{ currentPage + 1 }} / {{ getTotalPages() }}</span>
+              <button class="page-btn" (click)="nextPage()" [disabled]="currentPage >= getTotalPages() - 1">
+                <span class="material-icons">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Placeholder when no data -->
+        <ng-template #tablePlaceholder>
+          <div class="table-placeholder">
+            <span class="material-icons">table_chart</span>
+            <p>No table data available. Click settings to configure.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+
+    <div *ngIf="widget.type === 'chart'" class="chart-widget">
+      <div class="chart-container" id="chart-container-{{ widget.id }}">
+        <highcharts-chart *ngIf="chartOptions && !isLoading" [Highcharts]="highcharts" [options]="chartOptions"
+          [oneToOne]="true" [style.width.px]="getChartWidth()" [style.height.px]="getChartHeight()">
+        </highcharts-chart>
+        <div *ngIf="!chartOptions && !isLoading" class="chart-placeholder">
+          <span class="material-icons">bar_chart</span>
+          <p>No chart data available. Click settings to configure.</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="widget.type === 'tree'" class="tree-widget">
+      <div class="tree-container">
+        <ng-container *ngIf="TREE_DATA && TREE_DATA.length > 0; else treePlaceholder">
+          <cdk-tree [dataSource]="TREE_DATA" [childrenAccessor]="getChildren">
+            <cdk-nested-tree-node *cdkTreeNodeDef="let node">
+              <div class="tree-node">
+                <button mat-icon-button class="hierarchy" *ngIf="hasChild(0, node); else noToggle" (click)="toggleNode(node)">
+                  <mat-icon>{{ isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+                </button>
+                <ng-template #noToggle>
+                  <button mat-icon-button disabled></button>
+                </ng-template>
+                <span class="node-name" [ngClass]="{'supervisor': node.role === 'Supervisor', 'agent': node.role === 'Agent'}">
+                                <ng-container *ngIf="node.role === 'Agent'">
+                <span class="material-icons small-icon">chevron_right</span>
+              </ng-container>{{ node.name }}</span>
+                <span class="node-role">({{ node.role }})</span>
+              </div>
+              <div [class.hidden]="!isExpanded(node)">
+                <ng-container cdkTreeNodeOutlet></ng-container>
+              </div>
+            </cdk-nested-tree-node>
+          </cdk-tree>
+        </ng-container>
+
+        <ng-template #treePlaceholder>
+          <div class="tree-placeholder">
+            <span class="material-icons">account_tree</span>
+            <p>No tree data available. Click settings to configure.</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <div *ngIf="widget.type === 'import'" class="import-widget">
+      <div class="import-container">
+        <label class="import-label">
+          <input type="file" (change)="handleFileImport($event)"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+            hidden>
+          <span class="material-icons upload-icon">cloud_upload</span>
+          <span class="upload-text">Click to upload CSV or Excel file</span>
+        </label>
+        <p class="import-hint">Supported formats: .csv, .xlsx</p>
+        <div *ngIf="importedData && importedData.length > 0" class="import-preview">
+          <h4>Preview (first 5 rows):</h4>
+          <pre>{{ importedData | json }}</pre>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resize Handles -->
+  <div class="resize-handle resize-se" (mousedown)="startResize($event, 'se')" title="Resize widget">
+    <span class="material-icons">drag_indicator</span>
+  </div>
+  <div class="resize-handle resize-e" (mousedown)="startResize($event, 'e')" title="Resize width"></div>
+  <div class="resize-handle resize-s" (mousedown)="startResize($event, 's')" title="Resize height"></div>
+</div>
