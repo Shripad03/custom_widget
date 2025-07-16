@@ -13,6 +13,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { Observable } from 'rxjs';
 import { Widget, ChartSettings, TableSettings, TableColumn, TreeSettings } from '../../models/widget.model';
 import { DataService } from '../../services/data.service';
+import { SelectMetricsDialogComponent } from './components/select-metrics-dialog/select-metrics-dialog'; // Ensure this component exists or remove the import if not needed
+// Uncomment and ensure the file exists if you need this component.
 
 @Component({
   selector: 'app-widget-settings',
@@ -637,6 +639,7 @@ export class MetricConfigDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<MetricConfigDialogComponent>,
+    private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     // Initialize with existing config if available
@@ -652,8 +655,18 @@ export class MetricConfigDialogComponent {
   }
 
   openMetricSelector(): void {
-    // Placeholder for metric selector functionality
-    console.log('Opening metric selector...');
+      const dialogRef = this.dialog.open(SelectMetricsDialogComponent, {
+    width: '900px',
+    height: '700px',
+    data: { /* pass any data if needed */ }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Handle selected metrics here
+      console.log('Selected metrics:', result);
+    }
+  });
   }
 
   onSave(): void {
