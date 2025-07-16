@@ -253,6 +253,35 @@ export class WidgetSettingsComponent implements OnInit {
     }
   }
 
+  onWidgetTypeChange(value: 'report' | 'metric'): void {
+    this.widgetTypeSelection = value;
+    
+    if (value === 'metric') {
+      this.openMetricPopup();
+    }
+  }
+
+  private openMetricPopup(): void {
+    const dialogRef = this.dialog.open(MetricConfigDialogComponent, {
+      width: '500px',
+      maxWidth: '90vw',
+      data: {
+        widget: this.widget,
+        currentConfig: this.widget.config?.metricConfig || {}
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle metric configuration result
+        console.log('Metric configuration:', result);
+      } else {
+        // If user cancels, revert to report
+        this.widgetTypeSelection = 'report';
+      }
+    });
+  }
+
   private buildChartConfig(): any {
     return {
       chart: { type: this.chartSettings.chartType, height: 250 },
@@ -299,5 +328,140 @@ export class WidgetSettingsComponent implements OnInit {
       expandedByDefault: this.treeSettings.expandedByDefault,
       colors: this.treeSettings.colors
     };
+  }
+}
+
+// Metric Configuration Dialog Component
+@Component({
+  selector: 'app-metric-config-dialog',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule
+  ],
+  template: `
+    <div class="metric-dialog">
+      <h2 mat-dialog-title class="dialog-title">
+        <span class="material-icons">analytics</span>
+        Metric Configuration
+      </h2>
+
+      <mat-dialog-content class="dialog-content">
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Metric Name</mat-label>
+            <input matInput [(ngModel)]="metricConfig.name" placeholder="Enter metric name">
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Metric Type</mat-label>
+            <mat-select [(ngModel)]="metricConfig.type">
+              <mat-option value="count">Count</mat-option>
+              <mat-option value="sum">Sum</mat-option>
+              <mat-option value="average">Average</mat-option>
+              <mat-option value="percentage">Percentage</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Display Format</mat-label>
+            <mat-select [(ngModel)]="metricConfig.format">
+              <mat-option value="number">Number</mat-option>
+              <mat-option value="currency">Currency</mat-option>
+              <mat-option value="percentage">Percentage</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Target Value (Optional)</mat-label>
+            <input matInput type="number" [(ngModel)]="metricConfig.target" placeholder="Enter target value">
+          </mat-form-field>
+        </div>
+      </mat-dialog-content>
+
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-button (click)="onCancel()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="onSave()">
+          <span class="material-icons">save</span>
+          Save Metric
+        </button>
+      </mat-dialog-actions>
+    </div>
+  `,
+  styles: [`
+    .metric-dialog {
+      width: 500px;
+      max-width: 95vw;
+    }
+
+    .dialog-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #1e293b;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    .dialog-content {
+      padding: 1.5rem 0;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding-top: 1rem;
+    }
+
+    .material-icons {
+      font-family: 'Material Icons';
+      font-size: 1.125rem;
+    }
+  `]
+})
+export class MetricConfigDialogComponent {
+  metricConfig = {
+    name: '',
+    type: 'count',
+    format: 'number',
+    target: null
+  };
+
+  constructor(
+    public dialogRef: MatDialogRef<MetricConfigDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    // Initialize with existing config if available
+    if (data.currentConfig) {
+      this.metricConfig = { ...this.metricConfig, ...data.currentConfig };
+    }
+  }
+
+  onSave(): void {
+    this.dialogRef.close(this.metricConfig);
+  }
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }

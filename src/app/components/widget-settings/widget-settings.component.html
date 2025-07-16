@@ -18,7 +18,7 @@
 
           <div class="form-group">
             <label class="radio-group-label">Widget Type</label>
-            <mat-radio-group [(ngModel)]="widgetTypeSelection" class="radio-group">
+            <mat-radio-group [(ngModel)]="widgetTypeSelection" class="radio-group" (change)="onWidgetTypeChange($event.value)">
               <mat-radio-button value="report" class="radio-option">Report</mat-radio-button>
               <mat-radio-button value="metric" class="radio-option">Metric</mat-radio-button>
             </mat-radio-group>
