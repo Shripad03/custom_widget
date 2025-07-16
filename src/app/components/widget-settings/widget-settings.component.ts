@@ -443,7 +443,7 @@ export class WidgetSettingsComponent implements OnInit {
   `,
   styles: [`
     .metric-dialog {
-      width: 600px;
+      width: 500px;
       max-width: 95vw;
       max-height: 90vh;
       display: flex;
