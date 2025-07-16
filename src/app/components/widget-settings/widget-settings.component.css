@@ -86,6 +86,24 @@
   padding: 0.5rem 0;
 }
 
+.radio-group-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.5rem 0;
+}
+
+.radio-option {
+  margin-right: 0;
+}
+
 .custom-input {
   padding-left: 10px;
   padding-right: 10px;

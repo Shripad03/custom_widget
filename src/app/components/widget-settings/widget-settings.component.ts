@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
 import { Observable } from 'rxjs';
 import { Widget, ChartSettings, TableSettings, TableColumn, TreeSettings } from '../../models/widget.model';
 import { DataService } from '../../services/data.service';
@@ -24,7 +25,8 @@ import { DataService } from '../../services/data.service';
     MatSelectModule,
     MatCheckboxModule,
     MatTabsModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatRadioModule
   ],
   templateUrl: './widget-settings.component.html',
   styleUrls: ['./widget-settings.component.css'],
@@ -79,6 +81,7 @@ export class WidgetSettingsComponent implements OnInit {
   dataSourceKeys: string[] = [];
   availableFields: string[] = [];
   numericFields: string[] = [];
+  widgetTypeSelection: 'report' | 'metric' = 'report';
 
   constructor(
     public dialogRef: MatDialogRef<WidgetSettingsComponent>,
@@ -131,6 +134,9 @@ export class WidgetSettingsComponent implements OnInit {
       expandedByDefault: this.widget.config?.expandedByDefault === true,
       colors: this.widget.config?.colors || this.treeSettings.colors
     };
+
+    // Initialize widget type selection from config or default to 'report'
+    this.widgetTypeSelection = this.widget.config?.widgetType || 'report';
   }
 
   onDataSourceChange(): void {
@@ -233,10 +239,15 @@ export class WidgetSettingsComponent implements OnInit {
 
   // Build configs based on type
   private buildConfig(): any {
+    const baseConfig = {
+      widgetType: this.widgetTypeSelection
+    };
+
     switch (this.widget.type) {
-      case 'chart': return this.buildChartConfig();
-      case 'table': return this.buildTableConfig();
-      case 'tree': return this.buildTreeConfig();
+      case 'chart': return { ...baseConfig, ...this.buildChartConfig() };
+      case 'table': return { ...baseConfig, ...this.buildTableConfig() };
+      case 'tree': return { ...baseConfig, ...this.buildTreeConfig() };
+      default: return baseConfig;
     }
   }
 
