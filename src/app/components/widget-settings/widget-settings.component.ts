@@ -539,6 +539,54 @@ export class WidgetSettingsComponent implements OnInit {
       width: 100%;
     }
 
+    ::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper .mat-mdc-form-field-input-control {
+      padding: 12px 16px !important;
+    }
+
+    ::ng-deep .mat-mdc-select-value {
+      padding: 12px 16px !important;
+    }
+
+    ::ng-deep .mat-mdc-select-panel {
+      background: white !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 8px !important;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+      max-height: 300px !important;
+      z-index: 9999 !important;
+    }
+
+    ::ng-deep .mat-mdc-option {
+      background: white !important;
+      color: #374151 !important;
+      padding: 12px 16px !important;
+      font-size: 14px !important;
+      line-height: 1.4 !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    ::ng-deep .mat-mdc-option:hover {
+      background: #f8fafc !important;
+      color: #1e293b !important;
+    }
+
+    ::ng-deep .mat-mdc-option.mdc-list-item--selected {
+      background: #eff6ff !important;
+      color: #3b82f6 !important;
+    }
+
+    ::ng-deep .mat-mdc-option:last-child {
+      border-bottom: none !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field-outline {
+      color: #e2e8f0 !important;
+    }
+
+    ::ng-deep .mat-mdc-form-field-outline-thick {
+      color: #3b82f6 !important;
+    }
+
     .dialog-actions {
       display: flex;
       justify-content: flex-end;
