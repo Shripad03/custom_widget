@@ -6,6 +6,7 @@ import { CustomWidgetService } from '../../services/custom-widget.service';
 import { Widget, WidgetTemplate } from '../../models/widget.model';
 import { Observable, Subscription } from 'rxjs';
 import { WidgetToolbarComponent } from '../widget-toolbar/widget-toolbar.component';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-custom-widget-workspace',
@@ -13,10 +14,24 @@ import { WidgetToolbarComponent } from '../widget-toolbar/widget-toolbar.compone
   imports: [CommonModule, DragDropModule, WidgetComponent, WidgetToolbarComponent],
   templateUrl: './custom-widget-workspace.component.html',
   styleUrls: ['./custom-widget-workspace.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      state('void', style({ transform: 'translateX(100%)' })),  // hidden (offscreen right)
+      state('*', style({ transform: 'translateX(0%)' })),       // shown
+      transition('void => *', [
+        animate('200ms ease-in')
+      ]),
+      transition('* => void', [
+        animate('200ms ease-out')
+      ])
+    ])
+  ]
 })
+
 export class CustomWidgetWorkspaceComponent implements OnInit, OnDestroy {
   widgets: Widget[] = [];
   isDragOver = false;
+  showSidebar = false;
 
   private customWidgetSubscription!: Subscription;
   currentCustomWidget$: Observable<any>;
@@ -41,7 +56,7 @@ export class CustomWidgetWorkspaceComponent implements OnInit, OnDestroy {
     if (event.previousContainer !== event.container) {
       if (event.previousContainer.id === 'widget-library') {
         const widgetTemplate = event.item.data as WidgetTemplate;
-        this.customWidgetService.addWidget(widgetTemplate);
+        this.customWidgetService.replaceWidget(widgetTemplate);
       }
     } else {
       moveItemInArray(this.widgets, event.previousIndex, event.currentIndex);
@@ -60,5 +75,7 @@ export class CustomWidgetWorkspaceComponent implements OnInit, OnDestroy {
     return widget.id;
   }
 
-
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
+  }
 }

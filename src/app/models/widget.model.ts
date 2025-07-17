@@ -1,6 +1,7 @@
 export interface Widget {
   id: string;
   type: 'table' | 'chart' | 'tree' |'import';
+  chartType?: 'bar' | 'line' | 'pie' | 'doughnut' | 'column';
   title: string;
   position: { x: number; y: number };
   size: { width: number; height: number };
@@ -12,7 +13,8 @@ export interface Widget {
 
 export interface WidgetTemplate {
   id: string;
-  type: 'table' | 'chart' | 'tree' | 'import';
+  type: 'table' | 'chart' | 'tree';
+  chartType?: 'bar' | 'line' | 'pie' | 'doughnut' | 'column';
   title: string;
   icon: string;
   description: string;

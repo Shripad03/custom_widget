@@ -3,6 +3,7 @@
 --------------------------------------------------- */
 .widget-toolbar {
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding: 0.5rem 1rem;
   background: #f8f9fa;
@@ -17,7 +18,7 @@
 .widget-library {
   display: flex;
   flex-direction: row;
-  margin-left: auto;
+  margin-right: auto;
   gap: 20px;
 }
 
@@ -31,7 +32,7 @@
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem ;
   cursor: grab;
   gap: 5px;
   transition: all 0.2s ease;
@@ -72,21 +73,15 @@
 
 .widget-info-details {
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+text-align: center;
 }
 
 .widget-title {
-  font-size: 18px;
+  font-size: 16px;
   white-space: normal;
-  width: 80px;
+  width: 60px;
   height: 42px;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
+
 }
 
 /* ---------------------------------------------------

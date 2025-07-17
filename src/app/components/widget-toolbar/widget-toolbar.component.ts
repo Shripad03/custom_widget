@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-widget-toolbar',
-    imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule],
   standalone: true,
   templateUrl: './widget-toolbar.component.html',
   styleUrls: ['./widget-toolbar.component.css']

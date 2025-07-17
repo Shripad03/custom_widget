@@ -404,36 +404,6 @@ export class WidgetComponent implements OnInit, OnDestroy {
     });
   }
 
-  handleFileImport(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length) {
-      const file = target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const json = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: '' });
-
-        this.importedData = json.slice(0, 5); // Show preview
-        this.saveDataToJsonFile(json); // save to data.json
-      };
-
-      reader.readAsArrayBuffer(file);
-    }
-  }
-
-  saveDataToJsonFile(data: any[]): void {
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
   exportTableToCSV(): void {
     if (!this.tableData || this.tableData.length === 0) return;
 

@@ -231,6 +231,7 @@ export class WidgetSettingsComponent implements OnInit {
     const updatedWidget: Widget = {
       ...this.widget,
       title: this.widget.title,
+      chartType: this.chartSettings.chartType,
       dataSource: this.selectedDataSource ? { type: 'json', data: this.selectedDataSource } : this.widget.dataSource,
       config: this.buildConfig()
     };
@@ -257,7 +258,7 @@ export class WidgetSettingsComponent implements OnInit {
 
   onWidgetTypeChange(value: 'report' | 'metric'): void {
     this.widgetTypeSelection = value;
-    
+
     if (value === 'metric') {
       this.openMetricPopup();
     }
@@ -330,6 +331,13 @@ export class WidgetSettingsComponent implements OnInit {
       expandedByDefault: this.treeSettings.expandedByDefault,
       colors: this.treeSettings.colors
     };
+  }
+  onChartTypeChange(): void {
+    const selected = this.chartTypes.find(ct => ct.value === this.chartSettings.chartType);
+    if (selected) {
+      this.chartSettings.title = selected.label.split(' ')[0];
+      this.widget.title = selected.label.split(' ')[0];
+    }
   }
 }
 
@@ -655,18 +663,18 @@ export class MetricConfigDialogComponent {
   }
 
   openMetricSelector(): void {
-      const dialogRef = this.dialog.open(SelectMetricsDialogComponent, {
-    width: '900px',
-    height: '700px',
-    data: { /* pass any data if needed */ }
-  });
+    const dialogRef = this.dialog.open(SelectMetricsDialogComponent, {
+      width: '900px',
+      height: '700px',
+      data: { /* pass any data if needed */ }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // Handle selected metrics here
-      console.log('Selected metrics:', result);
-    }
-  });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Handle selected metrics here
+        console.log('Selected metrics:', result);
+      }
+    });
   }
 
   onSave(): void {

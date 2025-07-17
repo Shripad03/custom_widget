@@ -3,8 +3,12 @@
         <h1 class="workspace-title">
             {{ (currentCustomWidget$ | async)?.name || 'Custom Widgets' }}
         </h1>
+        <button mat-raised-button color="primary" class="recommend-btn ai-glow" (click)="toggleSidebar()">
+            <span class="material-icons">auto_awesome</span>
+            Recommended Widgets
+        </button>
     </div>
-    
+
     <app-widget-toolbar></app-widget-toolbar>
 
     <div class="workspace-content">
@@ -33,6 +37,17 @@
                     <app-widget [widget]="widget" [allWidgets]="widgets"></app-widget>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Sidebar overlay -->
+    <div class="sidebar-overlay" *ngIf="showSidebar">
+        <div class="sidebar" [@slideInOut]>
+            <h3>Recommended Widgets</h3>
+            <button mat-icon-button class="close-btn" (click)="toggleSidebar()">
+                <span class="material-icons">close</span>
+            </button>
+            <!-- Your recommended widgets go here -->
         </div>
     </div>
 </div>

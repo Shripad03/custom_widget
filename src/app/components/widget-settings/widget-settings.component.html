@@ -52,7 +52,7 @@
           <div class="form-group">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Chart Type</mat-label>
-              <mat-select class="custom-input" [(ngModel)]="chartSettings.chartType">
+              <mat-select class="custom-input" [(ngModel)]="chartSettings.chartType" (selectionChange)="onChartTypeChange()">
                 <mat-option *ngFor="let type of chartTypes" class="custom-select-color" [value]="type.value">
                   {{ type.label }}
                 </mat-option>
@@ -78,8 +78,8 @@
             <div class="form-group">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Category Field</mat-label>
-                <mat-select [(ngModel)]="chartSettings.categoryField">
-                  <mat-option *ngFor="let field of availableFields" [value]="field">{{ field }}</mat-option>
+                <mat-select class="custom-input" [(ngModel)]="chartSettings.categoryField">
+                  <mat-option class="custom-select-color" *ngFor="let field of availableFields" [value]="field">{{ field }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -87,8 +87,8 @@
             <div class="form-group">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Value Field</mat-label>
-                <mat-select [(ngModel)]="chartSettings.valueField">
-                  <mat-option *ngFor="let field of numericFields" [value]="field">{{ field }}</mat-option>
+                <mat-select class="custom-input" [(ngModel)]="chartSettings.valueField">
+                  <mat-option class="custom-select-color" *ngFor="let field of numericFields" [value]="field">{{ field }}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>

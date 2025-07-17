@@ -27,7 +27,6 @@
     </ng-container>
     
     <!-- Common actions -->
-    <ng-container *ngIf="widget.type !== 'import'">
       <button class="action-btn" (click)="refreshData()" title="Refresh Data" [disabled]="isLoading">
         <span class="material-icons" [class.spinning]="isLoading">refresh</span>
       </button>
@@ -37,7 +36,6 @@
           <button class="action-btn" (click)="openWidgetFullscreen()" title="Expand">
       <span class="material-icons">fullscreen</span>
     </button>
-    </ng-container>
     
     <!-- Always visible actions -->
     <button class="action-btn delete" (click)="deleteWidget()" title="Delete">
@@ -142,24 +140,6 @@
             <p>No tree data available. Click settings to configure.</p>
           </div>
         </ng-template>
-      </div>
-    </div>
-
-    <div *ngIf="widget.type === 'import'" class="import-widget">
-      <div class="import-container">
-        <label class="import-label">
-          <input type="file" (change)="handleFileImport($event)"
-            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-            hidden>
-          <span class="material-icons upload-icon">cloud_upload</span>
-          <span class="upload-text">Click to upload CSV or Excel file</span>
-        </label>
-        <p class="import-hint">Supported formats: .csv, .xlsx</p>
-        <div *ngIf="importedData && importedData.length > 0" class="import-preview">
-          <h4>Preview (first 5 rows):</h4>
-          <pre>{{ importedData | json }}</pre>
-
-        </div>
       </div>
     </div>
   </div>

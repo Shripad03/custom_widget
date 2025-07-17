@@ -19,12 +19,49 @@ export class CustomWidgetService {
       imagePath: 'assets/img/table.svg'
     },
     {
-      id: 'chart-template',
+      id: 'line-chart-template',
       type: 'chart',
-      title: 'Chart',
+      chartType: 'line',
+      title: 'Line',
+      icon: 'show_chart',
+      description: 'Line chart for trends and time series',
+      imagePath: 'assets/img/line-chart.svg'
+    },
+    {
+      id: 'bar-chart-template',
+      type: 'chart',
+      chartType: 'bar',
+      title: 'Bar',
+      icon: 'bar_chart',
+      description: 'Bar chart for comparing categories',
+      imagePath: 'assets/img/bar-chart.svg'
+    },
+    {
+      id: 'pie-chart-template',
+      type: 'chart',
+      chartType: 'pie',
+      title: 'Pie',
       icon: 'pie_chart',
-      description: 'Customizable data visualization charts',
-      imagePath: 'assets/img/chart.svg'
+      description: 'Pie chart to show proportions',
+      imagePath: 'assets/img/pie-chart.svg'
+    },
+    {
+      id: 'doughnut-chart-template',
+      type: 'chart',
+      chartType: 'doughnut',
+      title: 'Doughnut',
+      icon: 'donut_large',
+      description: 'Doughnut chart variant of pie',
+      imagePath: 'assets/img/doughnut-chart.svg'
+    },
+    {
+      id: 'column-chart-template',
+      type: 'chart',
+      chartType: 'column',
+      title: 'Column',
+      icon: 'stacked_bar_chart',
+      description: 'Column chart for vertical comparison',
+      imagePath: 'assets/img/column-chart.svg'
     },
     {
       id: 'supervisor-tree',
@@ -34,14 +71,6 @@ export class CustomWidgetService {
       description: 'Displays the hierarchy of supervisors and agents',
       imagePath: 'assets/img/tree.svg'
     },
-    {
-      id: 'import-widget',
-      type: 'import',
-      title: 'Import',
-      icon: 'cloud_upload',
-      description: 'Import CSV or Excel as JSON',
-      imagePath: 'assets/img/import.svg'
-    }
   ]);
 
   customWidgets$ = this.widgetsSubject.asObservable();
@@ -110,7 +139,12 @@ export class CustomWidgetService {
     };
 
     console.log('Created new widget:', newWidget);
-
+    if (widgetTemplate.type === 'chart' && widgetTemplate.chartType) {
+      newWidget.config = {
+        ...(newWidget.config || {}),
+        chartType: widgetTemplate.chartType
+      };
+    }
     const updatedCustomWidget = {
       ...currentCustomWidget,
       widgets: [...currentCustomWidget.widgets, newWidget],
@@ -165,6 +199,29 @@ export class CustomWidgetService {
     this.widgetsSubject.next(customWidgets);
   }
 
+  replaceWidget(widgetTemplate: WidgetTemplate): void {
+    const current = this.currentWidgetSubject.value;
+    if (!current) return;
+
+    const newWidget: Widget = {
+      id: `widget-${Date.now()}`,
+      type: widgetTemplate.type,
+      title: widgetTemplate.title,
+      chartType: widgetTemplate.chartType,
+      position: { x: 0, y: 0 },
+      size: { width: 360, height: 350 },
+      dataSource: widgetTemplate.defaultDataSource ? { type: 'json', data: widgetTemplate.defaultDataSource } : undefined,
+      config: widgetTemplate.chartType ? { chartType: widgetTemplate.chartType } : undefined
+    };
+
+    const updated = {
+      ...current,
+      widgets: [newWidget],
+      updatedAt: new Date()
+    };
+
+    this.updateCustomWidget(updated);
+  }
   /** Default data & config (optional fallback, not currently used directly) **/
 
   private getDefaultWidgetData(type: 'table' | 'chart'): any {
