@@ -1,0 +1,22 @@
+<div class="sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-header">
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <span class="material-icons">
+        {{ collapsed ? 'menu' : 'menu_open' }}
+      </span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="custom-widget-list">
+      <div 
+        *ngFor="let customWidget of customWidgets$ | async" 
+        class="custom-widget-item"
+        [class.active]="customWidget.id === (currentCustomWidget$ | async)?.id"
+        (click)="selectCustomWidget(customWidget)">
+        <span class="material-icons">dashboard</span>
+        <span class="custom-widget-name" *ngIf="!collapsed">{{ customWidget.name }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="fullscreen-dialog">
+
+  <div class="dialog-header">
+      <button class="close-btn" mat-icon-button (click)="closeDialog()" title="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+    <h2 class="dialog-title">{{ data?.widget?.title }}</h2>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="content-inner">
+      <ng-container [ngSwitch]="data.widget.type">
+
+        <!-- TABLE -->
+        <ng-container *ngSwitchCase="'table'">
+          <ng-container *ngIf="data.tableData && data.tableData.length > 0; else tablePlaceholder">
+            <table class="data-table">
+              <thead *ngIf="data.showHeader">
+                <tr>
+                  <th *ngFor="let column of data.displayColumns">
+                    {{ column.header }}
+                    <span *ngIf="column.sortable && data.sortField === column.field">
+                      {{ data.sortDirection === 'asc' ? '↑' : '↓' }}
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of data.tableData">
+                  <td *ngFor="let column of data.displayColumns">
+                    {{ formatCellValue(row[column.field], column.type) }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+          <ng-template #tablePlaceholder>
+            <div class="table-placeholder">
+              <span class="material-icons">table_chart</span>
+              <p>No table data available. Click settings to configure.</p>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        <!-- CHART -->
+        <ng-container *ngSwitchCase="'chart'">
+          <ng-container *ngIf="data.chartOptions; else chartPlaceholder">
+            <div class="chart-container">
+              <highcharts-chart 
+                [Highcharts]="data.highcharts"
+                [options]="data.chartOptions"
+                [oneToOne]="true">
+              </highcharts-chart>
+            </div>
+          </ng-container>
+          <ng-template #chartPlaceholder>
+            <div class="chart-placeholder">
+              <span class="material-icons">bar_chart</span>
+              <p>No chart data available. Click settings to configure.</p>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        <!-- TREE -->
+        <ng-container *ngSwitchCase="'tree'">
+          <ng-container *ngIf="data.TREE_DATA && data.TREE_DATA.length > 0; else treePlaceholder">
+            <cdk-tree [dataSource]="data.TREE_DATA" [childrenAccessor]="getChildren">
+              <cdk-nested-tree-node *cdkTreeNodeDef="let node">
+                <div class="tree-node">
+                  <button mat-icon-button *ngIf="hasChild(0, node); else noToggle" (click)="toggleNode(node)">
+                    <mat-icon>{{ isExpanded(node) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+                  </button>
+                  <ng-template #noToggle>
+                    <button mat-icon-button disabled></button>
+                  </ng-template>
+                  <span class="node-name">{{ node.name }}</span>
+                  <span class="node-role">({{ node.role }})</span>
+                </div>
+                <div [class.hidden]="!isExpanded(node)">
+                  <ng-container cdkTreeNodeOutlet></ng-container>
+                </div>
+              </cdk-nested-tree-node>
+            </cdk-tree>
+          </ng-container>
+          <ng-template #treePlaceholder>
+            <div class="tree-placeholder">
+              <span class="material-icons">account_tree</span>
+              <p>No tree data available. Click settings to configure.</p>
+            </div>
+          </ng-template>
+        </ng-container>
+
+        <!-- DEFAULT -->
+        <ng-container *ngSwitchDefault>
+          <p class="no-content">No content to display</p>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </div>
+</div>

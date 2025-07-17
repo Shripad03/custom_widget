@@ -323,8 +323,10 @@
   padding: 16px;
   box-sizing: border-box;
   pointer-events: auto;
+
+}
+.sidebar-header {
   display: flex;
-  align-items: flex-start;
 }
 .recommend-btn {
   display: flex;
@@ -359,4 +361,9 @@
   cursor: pointer;
   margin-left: auto;
   padding: 5px;
+}
+.iframe-container {
+  width: 100%;
+  height: calc(100% - 60px); /* Adjust height to fit within sidebar */
+  overflow: hidden;
 }

@@ -1,0 +1,30 @@
+<div class="widget-toolbar">
+  <h3 class="section-title">Widget Helpers</h3>
+  <div class="widget-library" 
+       cdkDropList 
+       id="widget-library"
+       [cdkDropListConnectedTo]="['workspace-drop-zone']"
+       [cdkDropListSortingDisabled]="true">
+    <div 
+      *ngFor="let template of widgetTemplates$ | async" 
+      class="widget-template"
+      cdkDrag
+      [cdkDragData]="template"
+      (cdkDragStarted)="onDragStart(template)"
+      (cdkDragEnded)="onDragEnd()">
+      <div class="widget-template-content">
+        <img 
+          class="widget-icon-img"
+          [src]="template.imagePath"
+          [alt]="template.title" />
+        
+
+      </div>
+      <div class="widget-info-details">
+              <div class="widget-info">
+          <span class="widget-title">{{ template.title }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

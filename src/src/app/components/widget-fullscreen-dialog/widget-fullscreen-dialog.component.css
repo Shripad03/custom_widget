@@ -1,0 +1,121 @@
+.fullscreen-dialog {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .dialog-title {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 0.5rem;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .content-wrapper {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .content-inner {
+    height: 100%;
+    width: 100%;
+    max-width: 1200px;
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+    }
+  }
+
+  .tree-node {
+    display: flex;
+    align-items: center;
+    margin: 0.25rem 0;
+
+    .node-name {
+      font-weight: 500;
+      margin-left: 0.5rem;
+    }
+
+    .node-role {
+      margin-left: 0.5rem;
+      color: #555;
+      font-size: 0.9rem;
+    }
+  }
+
+  .no-content {
+    text-align: center;
+    color: #777;
+    margin-top: 2rem;
+  }
+}
+
+.chart-container {
+  width: 100%;
+  height: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  highcharts-chart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+  }
+}
+
+.chart-placeholder,
+.table-placeholder,
+.tree-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  text-align: center;
+  padding: 2rem;
+
+  .material-icons {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+}

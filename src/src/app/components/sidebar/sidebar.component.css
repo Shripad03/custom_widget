@@ -1,0 +1,188 @@
+/* ---------------------------------------------------
+   Sidebar base
+--------------------------------------------------- */
+.sidebar {
+  width: 320px;
+  height: 100vh;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-right: 1px solid #e2e8f0;
+}
+
+/* ---------------------------------------------------
+   Sidebar header
+--------------------------------------------------- */
+.sidebar-header {
+  padding: 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+}
+
+/* ---------------------------------------------------
+   Create button
+--------------------------------------------------- */
+.btn-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-create:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* ---------------------------------------------------
+   Sections
+--------------------------------------------------- */
+.sidebar-section {
+  padding: 10px;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+/* ---------------------------------------------------
+   Custom Widget list
+--------------------------------------------------- */
+.custom-widget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.custom-widget-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+
+.custom-widget-item:hover {
+  background: #f1f5f9;
+  color: #374151;
+}
+
+.custom-widget-item.active {
+  background: #ebebeb;
+  color: black;
+  .material-icons{
+    color: #fd7e14;
+  }
+}
+
+.custom-widget-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+/* ---------------------------------------------------
+   Material icons
+--------------------------------------------------- */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.25rem;
+  line-height: 1;
+  display: inline-block;
+  text-transform: none;
+  white-space: nowrap;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------
+   Responsive styles
+--------------------------------------------------- */
+
+/* Tablet (<=1024px) */
+@media (max-width: 1024px) {
+  .sidebar { width: 280px; }
+  .sidebar-section { padding: 1rem; }
+}
+
+/* Mobile (<=768px) */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 280px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .sidebar-header,
+  .sidebar-section { padding: 1rem; }
+  .btn-text { display: inline; }
+}
+
+/* Small mobile (<=480px) */
+@media (max-width: 480px) {
+  .sidebar { width: 100vw; }
+  .sidebar-header { padding: 1rem; }
+  .sidebar-title { font-size: 1.125rem; }
+}
+
+.sidebar.collapsed {
+  width: 65px;
+  transition: width 0.3s;
+}
+.toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  @media screen and (max-width: 768px) {
+    display: none;
+    
+  }
+}
+
+.toggle-btn .material-icons {
+  font-size: 24px;
+}
+.sidebar.collapsed .sidebar-header {
+  justify-content: flex-start; /* collapsed: icon on left */
+}
+.sidebar-header {
+  display: flex;
+  justify-content: flex-end; /* default: icon on right */
+  padding: 8px 12px;
+}
+.sidebar.collapsed .sidebar-section {
+  padding: 10px;
+}

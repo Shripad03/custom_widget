@@ -1,0 +1,151 @@
+<div class="settings-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <span class="material-icons">settings</span>
+    Widget Settings
+  </h2>
+
+  <mat-dialog-content class="dialog-content">
+    <mat-tab-group class="settings-tabs" animationDuration="200ms">
+      <!-- General Settings Tab -->
+      <mat-tab label="General">
+        <div class="tab-content">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Widget Title</mat-label>
+              <input matInput class="custom-input" [(ngModel)]="widget.title" placeholder="Enter widget title">
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <label class="radio-group-label">Widget Type</label>
+            <mat-radio-group [(ngModel)]="widgetTypeSelection" class="radio-group" (change)="onWidgetTypeChange($event.value)">
+              <mat-radio-button value="report" class="radio-option">Report</mat-radio-button>
+              <mat-radio-button value="metric" class="radio-option">Metric</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Data Source</mat-label>
+              <mat-select class="custom-input" [(ngModel)]="selectedDataSource"
+                (selectionChange)="onDataSourceChange()">
+                <mat-option class="custom-select-color" value="">Select a data source</mat-option>
+                <mat-option class="custom-select-color" *ngFor="let source of dataSourceKeys" [value]="source">
+                  {{ getDataSourceName(source) }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="data-preview" *ngIf="selectedDataSource">
+            <h4>Data Preview</h4>
+            <div class="preview-container">
+              <pre>{{ getDataPreview() }}</pre>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Chart Settings Tab -->
+      <mat-tab label="Chart" *ngIf="widget.type === 'chart'">
+        <div class="tab-content">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Chart Type</mat-label>
+              <mat-select class="custom-input" [(ngModel)]="chartSettings.chartType" (selectionChange)="onChartTypeChange()">
+                <mat-option *ngFor="let type of chartTypes" class="custom-select-color" [value]="type.value">
+                  {{ type.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Chart Title</mat-label>
+              <input class="custom-input" matInput [(ngModel)]="chartSettings.title" placeholder="Enter chart title">
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <mat-checkbox [(ngModel)]="chartSettings.showLegend">Show Legend</mat-checkbox>
+              <mat-checkbox [(ngModel)]="chartSettings.showDataLabels">Show Data Labels</mat-checkbox>
+            </div>
+          </div>
+
+          <div *ngIf="selectedDataSource && availableFields.length > 0">
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Category Field</mat-label>
+                <mat-select class="custom-input" [(ngModel)]="chartSettings.categoryField">
+                  <mat-option class="custom-select-color" *ngFor="let field of availableFields" [value]="field">{{ field }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Value Field</mat-label>
+                <mat-select class="custom-input" [(ngModel)]="chartSettings.valueField">
+                  <mat-option class="custom-select-color" *ngFor="let field of numericFields" [value]="field">{{ field }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- Table Settings Tab -->
+      <mat-tab label="Table" *ngIf="widget.type === 'table'">
+        <div class="tab-content">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Table Title</mat-label>
+              <input class="custom-input" matInput [(ngModel)]="tableSettings.title" placeholder="Enter table title">
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <mat-checkbox [(ngModel)]="tableSettings.showHeader">Show Header</mat-checkbox>
+              <mat-checkbox [(ngModel)]="tableSettings.showPagination">Show Pagination</mat-checkbox>
+              <mat-checkbox [(ngModel)]="tableSettings.sortable">Sortable</mat-checkbox>
+              <mat-checkbox [(ngModel)]="tableSettings.filterable">Filterable</mat-checkbox>
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="tableSettings.showPagination">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Page Size</mat-label>
+              <mat-select [(ngModel)]="tableSettings.pageSize">
+                <mat-option *ngFor="let option of pageSizeOptions" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="selectedDataSource && availableFields.length > 0" class="columns-config">
+            <h4>Column Configuration</h4>
+            <div class="columns-list">
+              <div *ngFor="let field of availableFields; let i = index" class="column-item">
+                <mat-checkbox [checked]="isColumnSelected(field)" (change)="toggleColumn(field, $event.checked)">
+                  {{ field }}
+                </mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-button (click)="onCancel()" class="cancel-btn">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSave()" class="save-btn">
+      <span class="material-icons">save</span>
+      Apply Settings
+    </button>
+  </mat-dialog-actions>
+</div>

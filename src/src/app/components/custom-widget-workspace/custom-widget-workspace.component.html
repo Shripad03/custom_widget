@@ -1,0 +1,53 @@
+<div class="workspace">
+    <div class="workspace-header">
+        <h1 class="workspace-title">
+            {{ (currentCustomWidget$ | async)?.name || 'Custom Widgets' }}
+        </h1>
+        <button mat-raised-button color="primary" class="recommend-btn ai-glow" (click)="toggleSidebar()">
+            <span class="material-icons">auto_awesome</span>
+            Recommended Widgets
+        </button>
+    </div>
+
+    <app-widget-toolbar></app-widget-toolbar>
+
+    <div class="workspace-content">
+        <div class="drop-zone" [class.has-widgets]="widgets.length > 0" [class.drag-over]="isDragOver" cdkDropList
+            id="workspace-drop-zone" [cdkDropListData]="widgets" [cdkDropListConnectedTo]="['widget-library']"
+            (cdkDropListDropped)="onWidgetDrop($event)" (cdkDropListEntered)="onDragEnter()"
+            (cdkDropListExited)="onDragExit()">
+
+            <div *ngIf="widgets.length === 0" class="empty-state">
+                <div class="empty-icon">
+                    <span class="material-icons">widgets</span>
+                </div>
+                <h3 class="empty-title">No widgets yet</h3>
+                <p class="empty-description">
+                    Drag widgets from the widget helpers to start building your custom widgets
+                </p>
+                <div class="drag-hint">
+                    <span class="material-icons">arrow_upward</span>
+                    <span>Try dragging the Table or Chart widget</span>
+                </div>
+            </div>
+
+            <div class="widget-grid" *ngIf="widgets.length > 0">
+                <div *ngFor="let widget of widgets; trackBy: trackByWidgetId; let i = index" class="widget-container"
+                    cdkDrag [cdkDragData]="widget" [cdkDragDisabled]="false">
+                    <app-widget [widget]="widget" [allWidgets]="widgets"></app-widget>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar overlay -->
+    <div class="sidebar-overlay" *ngIf="showSidebar">
+        <div class="sidebar" [@slideInOut]>
+            <h3>Recommended Widgets</h3>
+            <button mat-icon-button class="close-btn" (click)="toggleSidebar()">
+                <span class="material-icons">close</span>
+            </button>
+            <!-- Your recommended widgets go here -->
+        </div>
+    </div>
+</div>

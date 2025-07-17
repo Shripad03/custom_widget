@@ -1,0 +1,54 @@
+<div class="app-header">
+  <div class="header-left">
+    <h2 class="app-title">Custom Widgets</h2>
+  </div>
+  <div class="header-center">
+    <!-- you can replace this with logo.svg or icon -->
+     <img src="assets/img/cxone.png" alt="Logo" class="app-logo">
+  </div>
+  <div class="header-right">
+    <button class="header-btn" (click)="refreshCustomWidget()" data-tooltip="Refresh the page">
+      <span class="material-icons">refresh</span>
+    </button>
+    <button class="header-btn user-icon" (click)="toggleProfilePopup()" data-tooltip="My profile And More">
+      <span class="material-icons">account_circle</span>
+    </button>
+  </div>
+</div>
+<!-- Profile popup -->
+<div class="profile-popup" *ngIf="profileVisible">
+  <div class="popup-header">
+    <span>My Profile</span>
+    <button class="close-btn" (click)="toggleProfilePopup()">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+  <div class="popup-container">
+  <div class="popup-wrapper">
+
+  <div class="popup-tabs">
+    <div class="tab active">GENERAL</div>
+  </div>
+  <div class="popup-content">
+    <div class="profile-info-left">
+      <div class="profile-avatar">RW</div>
+      <div class="profile-name">Ruchika Walia</div>
+    </div>
+    <div class="profile-info-details">
+      <div class="info-block">
+        <h4>User Information</h4>
+        <div><span class="label">EMAIL</span><br>ruchika.walia&#64;nice.com</div>
+        <div><span class="label">USERNAME</span><br>ruchika.walia&#64;cvtest.com</div>
+      </div>
+      <div class="info-block">
+        <h4>General Information</h4>
+        <div><span class="label">ACCOUNT</span><br>perm_test32_dashboard</div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  <div class="popup-footer">
+    <button class="ok-btn" (click)="toggleProfilePopup()">OK</button>
+  </div>
+</div>

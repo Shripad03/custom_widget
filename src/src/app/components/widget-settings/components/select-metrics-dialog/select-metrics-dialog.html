@@ -1,0 +1,36 @@
+<h2 mat-dialog-title>Select Metrics</h2>
+<mat-dialog-content class="metrics-dialog-content">
+  <div class="metrics-container">
+    <div class="metrics-sidebar">
+      <mat-nav-list>
+        <mat-list-item *ngFor="let category of categories" (click)="selectCategory(category)">
+          {{ category }}
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    <div class="metrics-main">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search in Metrics</mat-label>
+        <input matInput [(ngModel)]="searchText" placeholder="Search in Metrics">
+      </mat-form-field>
+      <div class="metrics-list">
+        <div *ngFor="let metric of filteredMetrics()">
+          <mat-checkbox [checked]="metric.selected" (change)="onMetricSelect(metric)">
+            {{ metric.name }}
+          </mat-checkbox>
+        </div>
+      </div>
+    </div>
+    <div class="metrics-selected">
+      <h4>Selected ({{ selectedMetrics.length }}/1)</h4>
+      <div *ngFor="let metric of selectedMetrics">
+        {{ metric.name }}
+      </div>
+      <button mat-button (click)="clearAll()">Clear All</button>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" (click)="confirmSelection()">Confirm</button>
+</mat-dialog-actions>

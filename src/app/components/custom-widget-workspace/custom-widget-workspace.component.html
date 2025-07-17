@@ -43,11 +43,18 @@
     <!-- Sidebar overlay -->
     <div class="sidebar-overlay" *ngIf="showSidebar">
         <div class="sidebar" [@slideInOut]>
+            <div class="sidebar-header">
             <h3>Recommended Widgets</h3>
             <button mat-icon-button class="close-btn" (click)="toggleSidebar()">
                 <span class="material-icons">close</span>
             </button>
+            </div>
             <!-- Your recommended widgets go here -->
+            <div *ngIf="showSidebar" class="iframe-container">
+                <iframe src="http://localhost:8501/" width="100%" height= '100%' frameborder="0"></iframe>
+            </div>
+            
+
         </div>
     </div>
 </div>
